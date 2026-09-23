@@ -3,7 +3,7 @@
 ## Phase 0 – Foundations
 - [x] Project repo + mentor instructions (CLAUDE.md) created — 2026-09-23
 - [x] Step 1: Install tools — AWS CLI 2.37.0 (official pkg; brew build unsupported on macOS 14), Terraform 1.16.4 — 2026-09-23
-- [ ] Step 2: Secure the AWS root account (MFA, no root keys) + billing budget alert
+- [x] Step 2: Root secured (MFA on, no root keys in any account — verified via get-account-summary), org-wide COST budget `monthly-cost-50` ($50/mo) in mgmt, root creds in password manager — 2026-09-23
 - [x] Step 3: AWS Organizations + dev/prod accounts — 2026-09-23
 - [x] Step 4: IAM Identity Center (SSO) user + CLI profiles data-dev, data-prd, mgmt (sso-session `mei-aws`) — 2026-09-23
 - [ ] Step 5: Terraform remote state (bootstrap)
@@ -28,3 +28,8 @@
 - SSO user created, invitation accepted, MFA registered, member of DataPlatformAdmins (2026-09-23).
 - OU confirmed as **Workloads** (ou-k7ua-roiruzwc) holding dev + prd; management account (Mae) at org root.
 - Permission set **AdministratorAccess** (ps-7223b91fc7c9bc5e, 4h session) assigned to DataPlatformAdmins on all 3 accounts (2026-09-23). TODO Phase 3: narrower sets (DataEngineer, ReadOnly, Billing), drop admin on management/prod.
+
+## Open items
+- [ ] Change prod account (mei-aws-prd) root email from school address to a long-lived/company email — before real data lands in prod.
+- [ ] Company slug for resource naming (needed for Step 5).
+- [ ] Phase 3: enable Centralized root access management (IAM, mgmt account); delegated admin for Identity Center; narrower permission sets.
