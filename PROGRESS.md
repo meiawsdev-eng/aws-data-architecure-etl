@@ -20,4 +20,5 @@
 - AWS account created fresh by the user as root owner (2026-09-23).
 - Home region: **us-east-1 (N. Virginia)**; set as console default region (2026-09-23). All resources go here unless there's a documented reason.
 - AWS Organizations enabled; original account = management account (billing/admin only, no workloads).
-- Member accounts: **aws-dev = 237162087184**, **aws-prd = 219712358777** (2026-09-23).
+- Organization **o-cr8t80750g**; management account **457778953166** (name "Mae").
+- Member accounts (both in the same OU ou-k7ua-roiruzwc): **mei-data-dev = 237162087184**, **mei-aws-prd = 219712358777** (2026-09-23).
