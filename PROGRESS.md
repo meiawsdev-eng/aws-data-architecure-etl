@@ -18,3 +18,4 @@
 
 ## Decisions
 - AWS account created fresh by the user as root owner (2026-09-23).
+- Home region: **us-east-1 (N. Virginia)**; set as console default region (2026-09-23). All resources go here unless there's a documented reason.
