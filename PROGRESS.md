@@ -22,3 +22,4 @@
 - AWS Organizations enabled; original account = management account (billing/admin only, no workloads).
 - Organization **o-cr8t80750g**; management account **457778953166** (name "Mae").
 - Member accounts (both in the same OU ou-k7ua-roiruzwc): **mei-data-dev = 237162087184**, **mei-aws-prd = 219712358777** (2026-09-23).
+- IAM Identity Center enabled: **Single-Region, us-east-1**, organization instance `ssoins-7223fd24797c3af2` (2026-09-23). Chose single-region for simplicity; a replica region can be added later if needed.
