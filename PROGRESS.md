@@ -5,7 +5,7 @@
 - [x] Step 1: Install tools — AWS CLI 2.37.0 (official pkg; brew build unsupported on macOS 14), Terraform 1.16.4 — 2026-09-23
 - [ ] Step 2: Secure the AWS root account (MFA, no root keys) + billing budget alert
 - [x] Step 3: AWS Organizations + dev/prod accounts — 2026-09-23
-- [ ] Step 4: IAM Identity Center (SSO) user + `aws sso login` profiles
+- [x] Step 4: IAM Identity Center (SSO) user + CLI profiles data-dev, data-prd, mgmt (sso-session `mei-aws`) — 2026-09-23
 - [ ] Step 5: Terraform remote state (bootstrap)
 - [ ] Step 6: KMS key + data lake S3 buckets (dev)
 
