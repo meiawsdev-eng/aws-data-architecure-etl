@@ -1,6 +1,10 @@
+# Terraform working files and state (state lives in S3, never in git)
 .terraform/
 *.tfstate
 *.tfstate.*
-*.tfvars
+crash.log
+# tfvars are committed on purpose (non-secret config). Never put secrets in them.
+# Local-only overrides:
+*.local.tfvars
 .env
 __pycache__/

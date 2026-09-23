@@ -42,7 +42,7 @@ Naming: buckets `<company>-datalake-{raw|clean|curated}-{env}`; tag everything w
 
 ## Phased roadmap
 - **Phase 0 – Foundations:** AWS Organizations (dev/prod accounts), IAM Identity Center (SSO), billing alerts,
-  Terraform with remote state (S3 + DynamoDB lock), KMS key, S3 buckets (block public access, SSE-KMS,
+  Terraform with remote state (S3 bucket per account, S3-native locking via `use_lockfile`), KMS key, S3 buckets (block public access, SSE-KMS,
   versioning on raw, lifecycle rules), per-job least-privilege IAM roles, VPC endpoints.
 - **Phase 1 – First pipeline end to end:** one important source (e.g. prod DB `orders`) → DMS/ingest to raw →
   Glue catalog → Glue PySpark Bronze→Silver MERGE into Iceberg → query in Athena → schedule + failure alerts.
@@ -68,10 +68,10 @@ aws-data-platform/
   PROGRESS.md        # step-by-step progress log
   docs/adr/          # architecture decision records
   terraform/
-    bootstrap/       # remote state bucket + lock table (run once)
+    bootstrap/{dev,prd}/ # state bucket per account (run once)
     modules/         # reusable modules (s3_datalake, glue_job, iam_role, ...)
     envs/dev/        # dev environment root
-    envs/prod/       # prod environment root
+    envs/prd/        # prod environment root
   glue_jobs/         # PySpark ETL scripts
   dbt/               # Silver → Gold models
   airflow/dags/      # orchestration
