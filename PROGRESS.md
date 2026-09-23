@@ -26,3 +26,5 @@
 - AWS access portal URL (use for browser + `aws configure sso`): **https://d-90667e1293.awsapps.com/start** (dual-stack alt: https://ssoins-7223fd24797c3af2.portal.us-east-1.app.aws).
 - SSO MFA: always-on, register-at-sign-in required. Group **DataPlatformAdmins** created (2026-09-23).
 - SSO user created, invitation accepted, MFA registered, member of DataPlatformAdmins (2026-09-23).
+- OU confirmed as **Workloads** (ou-k7ua-roiruzwc) holding dev + prd; management account (Mae) at org root.
+- Permission set **AdministratorAccess** (ps-7223b91fc7c9bc5e, 4h session) assigned to DataPlatformAdmins on all 3 accounts (2026-09-23). TODO Phase 3: narrower sets (DataEngineer, ReadOnly, Billing), drop admin on management/prod.
