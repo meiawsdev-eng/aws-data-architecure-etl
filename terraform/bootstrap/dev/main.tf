@@ -10,6 +10,16 @@ terraform {
       version = "~> 6.0"
     }
   }
+
+  # Added after the first apply: the bootstrap's own state now lives in the bucket it created.
+  backend "s3" {
+    bucket       = "mei-aws-slug-tfstate-dev-237162087184"
+    key          = "bootstrap/dev/terraform.tfstate"
+    region       = "us-east-1"
+    profile      = "data-dev"
+    encrypt      = true
+    use_lockfile = true
+  }
 }
 
 locals {

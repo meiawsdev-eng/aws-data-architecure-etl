@@ -7,7 +7,9 @@ resource "aws_s3_bucket" "this" {
 resource "aws_s3_bucket_versioning" "this" {
   bucket = aws_s3_bucket.this.id
   versioning_configuration {
-    status = var.versioning ? "Enabled" : "Suspended"
+    # "Disabled" is only valid for buckets that were never versioned; switching a versioned
+    # bucket off later must use "Suspended".
+    status = var.versioning ? "Enabled" : "Disabled"
   }
 }
 
