@@ -28,6 +28,7 @@
 - SSO user created, invitation accepted, MFA registered, member of DataPlatformAdmins (2026-09-23).
 - OU confirmed as **Workloads** (ou-k7ua-roiruzwc) holding dev + prd; management account (Mae) at org root.
 - Permission set **AdministratorAccess** (ps-7223b91fc7c9bc5e, 4h session) assigned to DataPlatformAdmins on all 3 accounts (2026-09-23). TODO Phase 3: narrower sets (DataEngineer, ReadOnly, Billing), drop admin on management/prod.
+- E1 (2026-09-26): same orders job ran on Glue ($0.019, 78 s, 2×G.1X) and EMR Serverless ($0.006, 101 s, 1-core driver + 2 executors). Removed Athena-set legacy Iceberg property 'write.object-storage.path' — newer Iceberg on EMR rejects it. Script is engine-agnostic (argparse).
 
 ## Open items
 - [ ] Change prod account (mei-aws-prd) root email from school address to a long-lived/company email — before real data lands in prod.
@@ -41,6 +42,7 @@
 
 ## Roadmap (confirmed 2026-09-26)
 - [ ] E: EMR — E1 same job on EMR Serverless; E2 EMR-on-EC2 cluster (Terraform, auto-termination) + Steps; E3 Spark tuning lab (skew, small files, Spark UI); E4 Spot + managed scaling + transient clusters; E5 ADR "Glue vs EMR vs EMR Serverless"
+- [ ] E2.0: Dev VPC (Terraform) — public/private subnets, route tables, S3 gateway endpoint, security groups; no NAT gateway (~$32/mo saved). Reused by EMR on EC2, MWAA, RDS/DMS, Redshift. Covers EC2 fundamentals in E2: instance types, instance profiles, EBS, SSM Session Manager.
 - [ ] 10: Gold layer — dbt + dimensional modeling (star schema, SCD Type 2)
 - [ ] 11: Airflow — local Docker first, then short MWAA lab; orchestrate Glue + dbt with retries and alerts
 - [ ] 12: CI/CD — GitHub Actions with OIDC to AWS (no keys); terraform plan on PR, deploy on merge
@@ -51,3 +53,4 @@
 - [ ] 17: Data quality gates, pytest for PySpark, Lake Formation governance
 - [ ] Later: Databricks / Snowflake trial
 - Cost rule: MWAA, RDS, Kinesis, Redshift, EMR clusters are lab-only — create, learn, delete. Budget $50/mo.
+
