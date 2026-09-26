@@ -6,7 +6,7 @@
 - [x] Step 2: Root secured (MFA on, no root keys in any account — verified via get-account-summary), org-wide COST budget `monthly-cost-50` ($50/mo) in mgmt, root creds in password manager — 2026-09-23
 - [x] Step 3: AWS Organizations + dev/prod accounts — 2026-09-23
 - [x] Step 4: IAM Identity Center (SSO) user + CLI profiles data-dev, data-prd, mgmt (sso-session `mei-aws`) — 2026-09-23
-- [x] Step 5: Terraform state bucket `mei-aws-slug-tfstate-dev-237162087184` (versioned, AES256, public blocked) — 2026-09-26. TODO 5b: migrate bootstrap state into it.
+- [x] Step 5: Terraform state bucket `mei-aws-slug-tfstate-dev-237162087184` (versioned, AES256, public blocked) — 2026-09-26. 
 - [ ] Step 6: KMS key + data lake S3 buckets (dev)
 
 ## Company context (fill in)
@@ -33,3 +33,21 @@
 - [ ] Change prod account (mei-aws-prd) root email from school address to a long-lived/company email — before real data lands in prod.
 - [ ] Company slug for resource naming (needed for Step 5).
 - [ ] Phase 3: enable Centralized root access management (IAM, mgmt account); delegated admin for Identity Center; narrower permission sets.
+
+## Phase 1 – First pipeline
+- [x] Step 8: First ETL — sample orders.csv → raw (Bronze) → Glue job `mei-aws-slug-dev-orders-bronze-to-silver` → `silver.orders` (Iceberg, MERGE, idempotent) → Athena — 2026-09-26
+- [x] Step 9.1: Git identity, private GitHub repo (SSH), first push — 2026-09-26
+- [x] Step 9.2: Bootstrap state migrated to S3 (`bootstrap/dev/terraform.tfstate`); local state deleted — 2026-09-26
+
+## Roadmap (confirmed 2026-09-26)
+- [ ] E: EMR — E1 same job on EMR Serverless; E2 EMR-on-EC2 cluster (Terraform, auto-termination) + Steps; E3 Spark tuning lab (skew, small files, Spark UI); E4 Spot + managed scaling + transient clusters; E5 ADR "Glue vs EMR vs EMR Serverless"
+- [ ] 10: Gold layer — dbt + dimensional modeling (star schema, SCD Type 2)
+- [ ] 11: Airflow — local Docker first, then short MWAA lab; orchestrate Glue + dbt with retries and alerts
+- [ ] 12: CI/CD — GitHub Actions with OIDC to AWS (no keys); terraform plan on PR, deploy on merge
+- [ ] 13: CDC ingestion — RDS Postgres → DMS → raw
+- [ ] 14: Redshift Serverless — load Gold, compare with Athena
+- [ ] 15: Streaming — Kinesis Data Streams / Firehose, Spark Structured Streaming
+- [ ] 16: Event-driven ingestion — Lambda + S3 events (+ Step Functions)
+- [ ] 17: Data quality gates, pytest for PySpark, Lake Formation governance
+- [ ] Later: Databricks / Snowflake trial
+- Cost rule: MWAA, RDS, Kinesis, Redshift, EMR clusters are lab-only — create, learn, delete. Budget $50/mo.
