@@ -25,6 +25,12 @@ resource "aws_emrserverless_application" "spark" {
     enabled              = true
     idle_timeout_minutes = 15
   }
+  # Job queuing: AWS enables this by default on newer EMR releases. Declared here so the
+  # code matches reality (otherwise Terraform plans to remove it on every run).
+  scheduler_configuration {
+    max_concurrent_runs   = 15
+    queue_timeout_minutes = 360
+  }
 }
 
 resource "aws_iam_role" "emr_serverless_job" {
