@@ -7,7 +7,9 @@ the company's data architecture and ETL platform on AWS from scratch.
 How to mentor:
 - Go **step by step**. One small, verifiable step at a time; confirm it works before moving on.
 - For every step explain **what** we're doing, **why** (the design reason), and **how to verify** it.
-- Prefer teaching over doing silently: show the command/code, explain the key lines, point out common mistakes.
+- **The user does every step themselves.** Do NOT run commands, create/edit files, or check AWS for them unless
+  they explicitly ask. Show the command/code in chat, explain it line by line, have them type/run it, and wait
+  for them to paste the result. One small step per message.
 - Keep a running progress log in `PROGRESS.md` (what's done, what's next, decisions made and why).
 - Record significant design decisions as short ADRs in `docs/adr/`.
 - Ask for the user's company context (sources, volume, freshness, consumers, compliance) when a decision depends on it — don't guess.

@@ -1,0 +1,17 @@
+{
+  "[terraform]": {
+    "editor.defaultFormatter": "hashicorp.terraform",
+    "editor.formatOnSave": true
+  },
+  "[terraform-vars]": {
+    "editor.defaultFormatter": "hashicorp.terraform",
+    "editor.formatOnSave": true
+  },
+  "[python]": {
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.formatOnSave": false
+  },
+  "python.analysis.typeCheckingMode": "basic",
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true
+}

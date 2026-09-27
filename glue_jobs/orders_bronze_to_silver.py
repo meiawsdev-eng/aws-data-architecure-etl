@@ -3,15 +3,27 @@
 Reads one day's raw CSV delivery, cleans it, and MERGEs it into the silver.orders Iceberg table.
 Idempotent: re-running for the same ingest_date leaves the table in the same state.
 """
+import argparse
 import sys
 
-from awsglue.utils import getResolvedOptions
 from pyspark.sql import SparkSession, Window
 from pyspark.sql import functions as F
 
 # 1. Parameters (passed by Glue as --ingest_date, --raw_bucket, --clean_bucket)
-args = getResolvedOptions(sys.argv, ["ingest_date", "raw_bucket", "clean_bucket"])
-ingest_date = args["ingest_date"]
+# 1. Parameters (--ingest_date, --raw_bucket, --clean_bucket). argparse works on Glue and EMR alike.
+def parse_args(argv):
+    """Read our parameters; ignore extra args the engine adds (e.g. Glue passes --JOB_NAME, --TempDir)."""
+    parser = argparse.ArgumentParser(allow_abbrev=False)
+    parser.add_argument("--ingest_date", required=True)
+    parser.add_argument("--raw_bucket", required=True)
+    parser.add_argument("--clean_bucket", required=True)
+    args, _unknown = parser.parse_known_args(argv)
+    return args
+
+
+args = parse_args(sys.argv[1:])
+ingest_date = args.ingest_date
+
 
 # 2. Spark session with an Iceberg catalog backed by the Glue Data Catalog
 spark = (
@@ -20,12 +32,12 @@ spark = (
     .config("spark.sql.catalog.glue_catalog", "org.apache.iceberg.spark.SparkCatalog")
     .config("spark.sql.catalog.glue_catalog.catalog-impl", "org.apache.iceberg.aws.glue.GlueCatalog")
     .config("spark.sql.catalog.glue_catalog.io-impl", "org.apache.iceberg.aws.s3.S3FileIO")
-    .config("spark.sql.catalog.glue_catalog.warehouse", f"s3://{args['clean_bucket']}/")
+    .config("spark.sql.catalog.glue_catalog.warehouse", f"s3://{args.clean_bucket}/")
     .getOrCreate()
 )
 
 # 3. Extract: exactly one raw partition, every column as string
-raw_path = f"s3://{args['raw_bucket']}/orders/ingest_date={ingest_date}/"
+raw_path = f"s3://{args.raw_bucket}/orders/ingest_date={ingest_date}/"
 raw = spark.read.option("header", "true").csv(raw_path)
 print(f"[extract] {raw.count()} raw rows from {raw_path}")
 

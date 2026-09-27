@@ -8,3 +8,5 @@ crash.log
 *.local.tfvars
 .env
 __pycache__/
+tfplan
+.venv/

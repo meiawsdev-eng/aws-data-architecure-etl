@@ -1,0 +1,4 @@
+line-length = 120
+
+[lint]
+select = ["E", "F", "W", "I"]   # pycodestyle errors/warnings, pyflakes (undefined names!), import sorting
