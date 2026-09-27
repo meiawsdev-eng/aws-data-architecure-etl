@@ -6,7 +6,7 @@
 - [x] Step 2: Root secured (MFA on, no root keys in any account — verified via get-account-summary), org-wide COST budget `monthly-cost-50` ($50/mo) in mgmt, root creds in password manager — 2026-09-23
 - [x] Step 3: AWS Organizations + dev/prod accounts — 2026-09-23
 - [x] Step 4: IAM Identity Center (SSO) user + CLI profiles data-dev, data-prd, mgmt (sso-session `mei-aws`) — 2026-09-23
-- [x] Step 5: Terraform state bucket `mei-aws-slug-tfstate-dev-237162087184` (versioned, AES256, public blocked) — 2026-09-26. 
+- [x] Step 5: Terraform state bucket `mei-aws-slug-tfstate-dev-237162087184` (versioned, AES256, public blocked) — 2026-09-26.
 - [ ] Step 6: KMS key + data lake S3 buckets (dev)
 
 ## Company context (fill in)
@@ -40,18 +40,22 @@
 - [x] Step 9.1: Git identity, private GitHub repo (SSH), first push — 2026-09-26
 - [x] Step 9.2: Bootstrap state migrated to S3 (`bootstrap/dev/terraform.tfstate`); local state deleted — 2026-09-26
 
-## Roadmap (confirmed 2026-09-26)
-- [ ] E: EMR — E1 same job on EMR Serverless; E2 EMR-on-EC2 cluster (Terraform, auto-termination) + Steps; E3 Spark tuning lab (skew, small files, Spark UI); E4 Spot + managed scaling + transient clusters; E5 ADR "Glue vs EMR vs EMR Serverless"
-- [ ] E2.0: Dev VPC (Terraform) — public/private subnets, route tables, S3 gateway endpoint, security groups; no NAT gateway (~$32/mo saved). Reused by EMR on EC2, MWAA, RDS/DMS, Redshift. Covers EC2 fundamentals in E2: instance types, instance profiles, EBS, SSM Session Manager.
-- [x] E2.3: EMR on EC2 lab cluster (1 primary + 1 core m5.xlarge, ~$0.50/h, 30-min idle auto-termination). Ran Spark in client mode; learned: tracking URL is VPC-private (use EMR console app UIs / `yarn logs`), `YarnClientSchedulerBackend` = client mode. Destroyed same day — 2026-09-27
-- [ ] 10: Gold layer — dbt + dimensional modeling (star schema, SCD Type 2)
-- [ ] 11: Airflow — local Docker first, then short MWAA lab; orchestrate Glue + dbt with retries and alerts
-- [ ] 12: CI/CD — GitHub Actions with OIDC to AWS (no keys); terraform plan on PR, deploy on merge
-- [ ] 13: CDC ingestion — RDS Postgres → DMS → raw
-- [ ] 14: Redshift Serverless — load Gold, compare with Athena
-- [ ] 15: Streaming — Kinesis Data Streams / Firehose, Spark Structured Streaming
-- [ ] 16: Event-driven ingestion — Lambda + S3 events (+ Step Functions)
-- [ ] 17: Data quality gates, pytest for PySpark, Lake Formation governance
-- [ ] Later: Databricks / Snowflake trial
-- Cost rule: MWAA, RDS, Kinesis, Redshift, EMR clusters are lab-only — create, learn, delete. Budget $50/mo.
+## Roadmap (re-ordered 2026-09-27, based on 48 Texas AWS data engineer postings)
+Survey (Dice, 104 TX postings, 48 mention AWS): Databricks 50%, Snowflake 44%, Kafka/Kinesis 42%,
+Glue 33%, Redshift 31%, Airflow 29%, Kubernetes 25% (mostly general), Terraform 21%, EMR 10%, EMR on EKS 0%.
 
+- [x] E1: EMR Serverless — Glue $0.019 vs EMR Serverless $0.006 (2026-09-26)
+- [x] E2.0: Dev VPC — public/private subnets, S3 endpoint, no NAT (2026-09-27)
+- [x] E2: EMR on EC2 lab — job ran as EMR Step, YARN + Spark UI, cluster destroyed (2026-09-27)
+- [ ] 1. E3: Spark tuning lab — data skew, AQE vs salting, Spark UI
+- [ ] 2. Databricks — run the orders pipeline on Databricks (free trial)
+- [ ] 3. Airflow + Docker basics — local Docker first, then short MWAA lab
+- [ ] 4. Streaming — Kafka concepts + Kinesis, Spark Structured Streaming
+- [ ] 5. Snowflake + dbt — Gold layer, dimensional modeling (star schema, SCD2)
+- [ ] 6. Redshift Serverless — load Gold, compare with Athena/Snowflake
+- [ ] 7. CI/CD — GitHub Actions, OIDC to AWS, ruff + terraform plan on PR
+- [ ] 8. CDC — RDS Postgres → DMS → raw
+- [ ] 9. Data quality + pytest + Lake Formation
+- [ ] Short: E4 (Spot + scaling) and E5 (ADR: Glue vs EMR vs EMR Serverless)
+- [ ] Later: Docker/Kubernetes basics (general skill; EMR on EKS skipped: 0% of postings)
+- Cost rule: MWAA, RDS, Kinesis, Redshift, EMR clusters are lab-only — create, learn, delete. Budget $50/mo. Databricks/Snowflake: free trials.
