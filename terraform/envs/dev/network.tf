@@ -34,7 +34,12 @@ resource "aws_subnet" "public" {
   availability_zone       = each.key
   cidr_block              = each.value
   map_public_ip_on_launch = true
-  tags                    = { Name = "${local.prefix}-public-${each.key}", tier = "public" }
+  tags = {
+    Name = "${local.prefix}-public-${each.key}"
+    tier = "public"
+    # Required by AmazonEMRServicePolicy_v2: EMR may only use network resources carrying this tag.
+    "for-use-with-amazon-emr-managed-policies" = "true"
+  }
 }
 
 # Private subnets: no internet route at all (databases, internal services).
@@ -43,7 +48,11 @@ resource "aws_subnet" "private" {
   vpc_id            = aws_vpc.main.id
   availability_zone = each.key
   cidr_block        = each.value
-  tags              = { Name = "${local.prefix}-private-${each.key}", tier = "private" }
+  tags = {
+    Name                                       = "${local.prefix}-private-${each.key}"
+    tier                                       = "private"
+    "for-use-with-amazon-emr-managed-policies" = "true"
+  }
 }
 
 resource "aws_route_table" "public" {
