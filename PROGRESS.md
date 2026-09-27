@@ -43,6 +43,7 @@
 ## Roadmap (confirmed 2026-09-26)
 - [ ] E: EMR — E1 same job on EMR Serverless; E2 EMR-on-EC2 cluster (Terraform, auto-termination) + Steps; E3 Spark tuning lab (skew, small files, Spark UI); E4 Spot + managed scaling + transient clusters; E5 ADR "Glue vs EMR vs EMR Serverless"
 - [ ] E2.0: Dev VPC (Terraform) — public/private subnets, route tables, S3 gateway endpoint, security groups; no NAT gateway (~$32/mo saved). Reused by EMR on EC2, MWAA, RDS/DMS, Redshift. Covers EC2 fundamentals in E2: instance types, instance profiles, EBS, SSM Session Manager.
+- [x] E2.3: EMR on EC2 lab cluster (1 primary + 1 core m5.xlarge, ~$0.50/h, 30-min idle auto-termination). Ran Spark in client mode; learned: tracking URL is VPC-private (use EMR console app UIs / `yarn logs`), `YarnClientSchedulerBackend` = client mode. Destroyed same day — 2026-09-27
 - [ ] 10: Gold layer — dbt + dimensional modeling (star schema, SCD Type 2)
 - [ ] 11: Airflow — local Docker first, then short MWAA lab; orchestrate Glue + dbt with retries and alerts
 - [ ] 12: CI/CD — GitHub Actions with OIDC to AWS (no keys); terraform plan on PR, deploy on merge

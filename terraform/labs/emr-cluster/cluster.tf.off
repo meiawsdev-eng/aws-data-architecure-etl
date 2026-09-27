@@ -1,0 +1,51 @@
+# E2.3: the EMR cluster — 1 primary + 1 core node. Bills ~$0.50/hour while running.
+
+resource "aws_emr_cluster" "lab" {
+  name          = local.prefix
+  release_label = "emr-7.14.0"        # EMR version = which Hadoop/Spark versions get installed
+  applications  = ["Hadoop", "Spark"] # AWS installs YARN, HDFS and Spark for us
+  service_role  = aws_iam_role.emr_service.arn
+  log_uri       = "s3://${local.buckets.artifacts}/logs/emr/"
+
+  keep_job_flow_alive_when_no_steps = true  # stay up so we can explore (auto-termination still applies)
+  termination_protection            = false # lets terraform destroy remove it
+
+  ec2_attributes {
+    subnet_id                         = local.subnet_id
+    instance_profile                  = aws_iam_instance_profile.emr_ec2.arn # the computers' badge
+    emr_managed_master_security_group = aws_security_group.primary.id        # the fence
+    emr_managed_slave_security_group  = aws_security_group.core.id
+  }
+
+  master_instance_group {
+    instance_type = "m5.xlarge" # primary: ResourceManager, NameNode
+  }
+
+  core_instance_group {
+    instance_type  = "m5.xlarge" # core: NodeManager, DataNode, runs Spark executors
+    instance_count = 1
+  }
+
+  # Safety net: shut down after 30 minutes with no work.
+  auto_termination_policy {
+    idle_timeout = 1800
+  }
+
+  # Puts the Iceberg library on the cluster (like --datalake-formats on Glue).
+  configurations_json = jsonencode([
+    {
+      Classification = "iceberg-defaults"
+      Properties     = { "iceberg.enabled" = "true" }
+    }
+  ])
+
+  tags = merge(local.emr_tag, { Name = local.prefix })
+}
+
+output "cluster_id" {
+  value = aws_emr_cluster.lab.id
+}
+
+output "primary_node_dns" {
+  value = aws_emr_cluster.lab.master_public_dns
+}
