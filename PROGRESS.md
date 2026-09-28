@@ -47,7 +47,10 @@ Glue 33%, Redshift 31%, Airflow 29%, Kubernetes 25% (mostly general), Terraform 
 - [x] E1: EMR Serverless — Glue $0.019 vs EMR Serverless $0.006 (2026-09-26)
 - [x] E2.0: Dev VPC — public/private subnets, S3 endpoint, no NAT (2026-09-27)
 - [x] E2: EMR on EC2 lab — job ran as EMR Step, YARN + Spark UI, cluster destroyed (2026-09-27)
-- [ ] 1. E3: Spark tuning lab — data skew, AQE vs salting, Spark UI
+- [~] 1. E3: Spark tuning lab — 20M rows, 80% on one key, EMR 1 core node (4 cores)
+  - skewed: 13.2 s — max task 16.0M rows / 138.7 MiB vs median 25k rows / 283 KiB (Max ≫ Median = skew)
+  - AQE: 9.6 s (~27% faster) — hot partition split in 2 (8.0M rows), tiny partitions coalesced
+  - TODO: salted run (8 buckets) and compare; note salting copies customers ×8 → more shuffle?
 - [ ] 2. Databricks — run the orders pipeline on Databricks (free trial)
 - [ ] 3. Airflow + Docker basics — local Docker first, then short MWAA lab
 - [ ] 4. Streaming — Kafka concepts + Kinesis, Spark Structured Streaming
