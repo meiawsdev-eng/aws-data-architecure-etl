@@ -50,7 +50,8 @@ Glue 33%, Redshift 31%, Airflow 29%, Kubernetes 25% (mostly general), Terraform 
 - [~] 1. E3: Spark tuning lab — 20M rows, 80% on one key, EMR 1 core node (4 cores)
   - skewed: 13.2 s — max task 16.0M rows / 138.7 MiB vs median 25k rows / 283 KiB (Max ≫ Median = skew)
   - AQE: 9.6 s (~27% faster) — hot partition split in 2 (8.0M rows), tiny partitions coalesced
-  - TODO: salted run (8 buckets) and compare; note salting copies customers ×8 → more shuffle?
+  - Salted run skipped (optional later)
+  <!-- - TODO: salted run (8 buckets) and compare; note salting copies customers ×8 → more shuffle? -->
 - [ ] 2. Databricks — run the orders pipeline on Databricks (free trial)
 - [ ] 3. Airflow + Docker basics — local Docker first, then short MWAA lab
 - [ ] 4. Streaming — Kafka concepts + Kinesis, Spark Structured Streaming
